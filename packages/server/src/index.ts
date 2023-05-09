@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 
@@ -22,7 +23,7 @@ async function init() {
     await migrate();
     console.log("DB migrated");
 
-    const server = createHTTPServer({ router: appRouter });
+    const server = createHTTPServer({ middleware: cors(), router: appRouter });
     server.listen(PORT);
     console.log("HTTP server up");
   } catch (error) {

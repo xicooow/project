@@ -5,5 +5,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail -p \"{pid}\" -c \"red,green\" \"yarn workspace @project/server dev\" \"yarn workspace @project/client dev\""
+  },
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
 }

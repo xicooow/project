@@ -4,6 +4,7 @@
   "main": "./src/index.ts",
   "license": "MIT",
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/node": "^20.1.0",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "@trpc/server": "^10.25.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "mongoose": "^7.1.0"
   },
