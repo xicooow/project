@@ -6,14 +6,6 @@ import { RoleModel } from "../models/role.model";
 
 function $RoleController() {
   return {
-    async getAll() {
-      try {
-        const roles = await RoleModel.find({}).exec();
-        return roles;
-      } catch (error) {
-        throw getError(error);
-      }
-    },
     async create({ level }: Pick<Role, "level">) {
       try {
         const role = new RoleModel({ level });

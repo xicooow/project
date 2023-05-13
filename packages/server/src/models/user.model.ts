@@ -40,6 +40,12 @@ const schema = new Schema<User>(
       minlength: 4,
       maxlength: 32,
     },
+    email: {
+      trim: true,
+      type: String,
+      unique: true,
+      required: true,
+    },
   },
   { versionKey: false }
 );
