@@ -25,7 +25,7 @@ async function init() {
 
     const server = createHTTPServer({ middleware: cors(), router: appRouter });
     server.listen(PORT);
-    console.log("HTTP server up");
+    console.log(`HTTP server up in PORT ${PORT}`);
   } catch (error) {
     throw getError(error);
   }
