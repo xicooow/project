@@ -1,11 +1,11 @@
 import { FunctionComponent } from "react";
 
-import { Roles } from "./components/Roles";
+import { Login } from "./components/Login";
 
 export const App: FunctionComponent = () => {
   return (
-    <>
-      <Roles />
-    </>
+    <section>
+      <Login />
+    </section>
   );
 };
