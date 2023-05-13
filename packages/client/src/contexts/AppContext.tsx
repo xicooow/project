@@ -3,7 +3,7 @@ import { TRPCClient } from "@trpc/client";
 import { FunctionComponent, PropsWithChildren } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import App from "../App";
+import { App } from "../App";
 import { withAppContext } from "./withAppContext";
 import { trpc, trpcClient, queryClient } from "../trpc";
 

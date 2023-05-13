@@ -1,11 +1,11 @@
+import { FunctionComponent } from "react";
+
 import { Roles } from "./components/Roles";
 
-function App() {
+export const App: FunctionComponent = () => {
   return (
     <>
       <Roles />
     </>
   );
-}
-
-export default App;
+};
