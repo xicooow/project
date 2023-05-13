@@ -6,8 +6,8 @@ import { createHTTPServer } from "@trpc/server/adapters/standalone";
 dotenv.config();
 
 import { connect, migrate } from "./db";
-import { PORT, getError } from "./utils";
 import { appRouter } from "./trpc/router";
+import { PORT, getError, logger } from "./utils";
 
 // high-level server side router export
 export type AppRouter = typeof appRouter;
@@ -18,14 +18,14 @@ init();
 async function init() {
   try {
     await connect();
-    console.log("DB connected");
+    logger.info("DB connected");
 
     await migrate();
-    console.log("DB migrated");
+    logger.info("DB migrated");
 
     const server = createHTTPServer({ middleware: cors(), router: appRouter });
     server.listen(PORT);
-    console.log(`HTTP server up in PORT ${PORT}`);
+    logger.info("HTTP server up in PORT %d", PORT);
   } catch (error) {
     throw getError(error);
   }
