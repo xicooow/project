@@ -8,6 +8,7 @@ import {
   FunctionComponent,
 } from "react";
 import { CreateUser as Payload } from "@project/types";
+import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
 
@@ -56,58 +57,64 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
 
   return (
     <>
-      <h1>Create user</h1>
+      <Title>Create user</Title>
       {error && (
-        <p>
+        <Text>
           {error.data?.httpStatus || 500} - {error.message}
-        </p>
+        </Text>
       )}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
+        <Box>
+          <TextInput
             required
             id="email"
             type="email"
+            label="Email"
             value={email}
             name="email-input"
             onChange={handleFieldChange(setEmail)}
           />
-        </div>
-        <div>
-          <label htmlFor="first_name">First Name</label>
-          <input
+        </Box>
+        <Box>
+          <TextInput
             required
             type="text"
             id="first_name"
+            label="First Name"
             value={first_name}
             name="first_name-input"
             onChange={handleFieldChange(setFirstName)}
           />
-        </div>
-        <div>
-          <label htmlFor="last_name">Last Name</label>
-          <input
+        </Box>
+        <Box>
+          <TextInput
             type="text"
             id="last_name"
+            label="Last Name"
             value={last_name}
             name="last_name-input"
             onChange={handleFieldChange(setLastName)}
           />
-        </div>
-        <div>
-          <button type="button" disabled={isLoading} onClick={onClose}>
+        </Box>
+        <Box>
+          <Button
+            color="gray"
+            type="button"
+            variant="subtle"
+            onClick={onClose}
+            disabled={isLoading}
+          >
             Close
-          </button>
-          <button type="submit" disabled={isLoading}>
+          </Button>
+          <Button type="submit" disabled={isLoading}>
             Save
-          </button>
-        </div>
+          </Button>
+        </Box>
       </form>
       {user && (
-        <p>
+        <Text>
           #{user.session_count} - {user.display_name}
-        </p>
+        </Text>
       )}
     </>
   );

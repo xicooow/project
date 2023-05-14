@@ -7,6 +7,7 @@ export const mantineProps: ThemeProps = {
   withNormalizeCSS: true,
   theme: {
     colorScheme: "dark",
+    primaryColor: "yellow",
     fontFamily: "Shantell Sans, sans-serif",
   },
 };

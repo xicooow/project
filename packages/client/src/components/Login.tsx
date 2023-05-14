@@ -5,6 +5,7 @@ import {
   FunctionComponent,
   ChangeEventHandler,
 } from "react";
+import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
 
@@ -36,37 +37,43 @@ export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
 
   return (
     <>
-      <h1>Welcome!</h1>
+      <Title>Welcome!</Title>
       {error && (
-        <p>
+        <Text>
           {error.data?.httpStatus || 500} - {error.message}
-        </p>
+        </Text>
       )}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
+        <Box>
+          <TextInput
             required
             id="email"
             type="email"
+            label="Email"
             value={email}
             name="email-input"
             onChange={handleEmailChange}
           />
-        </div>
-        <div>
-          <button type="button" disabled={isLoading} onClick={onCreate}>
+        </Box>
+        <Box>
+          <Button
+            color="gray"
+            type="button"
+            variant="subtle"
+            onClick={onCreate}
+            disabled={isLoading}
+          >
             Create
-          </button>
-          <button type="submit" disabled={isLoading}>
+          </Button>
+          <Button type="submit" disabled={isLoading}>
             Login
-          </button>
-        </div>
+          </Button>
+        </Box>
       </form>
       {user && (
-        <p>
+        <Text>
           #{user.session_count} - {user.display_name}
-        </p>
+        </Text>
       )}
     </>
   );
