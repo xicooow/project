@@ -3,18 +3,23 @@ import {
   useCallback,
   FormEventHandler,
   FunctionComponent,
+  ChangeEventHandler,
 } from "react";
 
 import { trpc } from "../trpc";
 
-export const Login: FunctionComponent = () => {
+export type LoginProps = {
+  onCreate?: () => void;
+};
+
+export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
   const [email, setEmail] = useState("");
   const {
     error,
     isLoading,
     data: user,
     mutate: login,
-  } = trpc.login.useMutation();
+  } = trpc.loginProcedure.useMutation();
 
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
@@ -22,6 +27,11 @@ export const Login: FunctionComponent = () => {
       login(email);
     },
     [login, email]
+  );
+
+  const handleEmailChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    ({ target }) => setEmail(target.value),
+    []
   );
 
   return (
@@ -41,10 +51,13 @@ export const Login: FunctionComponent = () => {
             type="email"
             value={email}
             name="email-input"
-            onChange={({ target }) => setEmail(target.value)}
+            onChange={handleEmailChange}
           />
         </div>
         <div>
+          <button type="button" disabled={isLoading} onClick={onCreate}>
+            Create
+          </button>
           <button type="submit" disabled={isLoading}>
             Login
           </button>
