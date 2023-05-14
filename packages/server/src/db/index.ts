@@ -32,7 +32,7 @@ export async function migrate() {
       if (exists) return;
 
       try {
-        await RoleController.create({ level });
+        await RoleController.create(level);
       } catch (error) {
         throw getError(error);
       }

@@ -6,11 +6,21 @@ import { RoleModel } from "../models/role.model";
 
 function $RoleController() {
   return {
-    async create({ level }: Pick<Role, "level">) {
+    async getRoleByLevel(level: Role["level"]) {
+      try {
+        const role = await RoleModel.findOne({ level }).exec();
+        if (!role) {
+          throw new Error(`Role with level <${level}> does not exist`);
+        }
+        return role;
+      } catch (error) {
+        throw getError(error);
+      }
+    },
+    async create(level: Role["level"]) {
       try {
         const role = new RoleModel({ level });
-        const createdRole = await role.save();
-        return createdRole.toObject();
+        return await role.save();
       } catch (error) {
         throw getError(error);
       }
