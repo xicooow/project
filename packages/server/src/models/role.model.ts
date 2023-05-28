@@ -1,7 +1,9 @@
 import { Schema, model } from "mongoose";
 import type { Role } from "@project/types";
 
-const schema = new Schema<Role>(
+interface RoleSchema extends Omit<Role, "_id"> {}
+
+const schema = new Schema<RoleSchema>(
   {
     level: {
       type: String,

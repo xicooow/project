@@ -1,7 +1,11 @@
 import { Schema, model } from "mongoose";
 import type { User } from "@project/types";
 
-const schema = new Schema<User>(
+interface UserSchema extends Omit<User, "_id" | "created_date"> {
+  created_date: Date;
+}
+
+const schema = new Schema<UserSchema>(
   {
     first_name: {
       trim: true,
