@@ -8,22 +8,23 @@ import {
 import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
+import { useCacheUser } from "../hooks/useCacheUser";
 
 export type LoginProps = {
   onCreate?: () => void;
 };
 
 export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
+  const { setCacheUser } = useCacheUser();
   const [email, setEmail] = useState("");
   const {
     error,
     isLoading,
-    data: user,
     mutate: login,
-  } = trpc.loginProcedure.useMutation();
+  } = trpc.loginProcedure.useMutation({ onSuccess: setCacheUser });
 
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
-    (e) => {
+    function (e) {
       e.preventDefault();
       login(email);
     },
@@ -31,7 +32,9 @@ export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
   );
 
   const handleEmailChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    ({ target }) => setEmail(target.value),
+    function ({ target }) {
+      setEmail(target.value);
+    },
     []
   );
 
@@ -70,11 +73,6 @@ export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
           </Button>
         </Box>
       </form>
-      {user && (
-        <Text>
-          #{user.session_count} - {user.display_name}
-        </Text>
-      )}
     </>
   );
 };

@@ -11,12 +11,14 @@ import { CreateUser as Payload } from "@project/types";
 import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
+import { useCacheUser } from "../hooks/useCacheUser";
 
 export type CreateUserProps = {
   onClose?: () => void;
 };
 
 export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
+  const { setCacheUser } = useCacheUser();
   const [email, setEmail] = useState("");
   const [last_name, setLastName] = useState("");
   const [first_name, setFirstName] = useState("");
@@ -24,13 +26,8 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
   const {
     error,
     isLoading,
-    data: user,
     mutate: createUser,
-  } = trpc.userProcedure.useMutation({
-    onSuccess() {
-      setTimeout(() => onClose && onClose(), 3000);
-    },
-  });
+  } = trpc.userProcedure.useMutation({ onSuccess: setCacheUser });
 
   const handleFieldChange = useCallback<
     (
@@ -38,13 +35,14 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
     ) => (e: ChangeEvent<HTMLInputElement>) => void
   >(
     (fn) =>
-      ({ target }) =>
-        fn(target.value),
+      function ({ target }) {
+        fn(target.value);
+      },
     []
   );
 
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
-    (e) => {
+    function (e) {
       e.preventDefault();
       const payload: Payload = { email, first_name };
       if (last_name) {
@@ -111,11 +109,6 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
           </Button>
         </Box>
       </form>
-      {user && (
-        <Text>
-          #{user.session_count} - {user.display_name}
-        </Text>
-      )}
     </>
   );
 };
