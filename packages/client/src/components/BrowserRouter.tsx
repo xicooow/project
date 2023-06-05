@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import { FunctionComponent, useMemo } from "react";
 
-import { Login } from "./Login";
-import { Panel } from "./Panel";
-import { CreateUser } from "./CreateUser";
-import { ProtectedRoute } from "./ProtectedRoute";
+import { Login } from "../pages/Login";
+import { Panel } from "../pages/Panel";
+import { CreateUser } from "../pages/CreateUser";
 
 import { useSession } from "../hooks/useSession";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export const BrowserRouter: FunctionComponent = () => {
   const { userSession } = useSession();
