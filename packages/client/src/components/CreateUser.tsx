@@ -8,7 +8,7 @@ import {
   FunctionComponent,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { CreateUser as Payload } from "@project/types";
+import type { CreateUser as Payload } from "@project/types";
 import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";

@@ -1,4 +1,4 @@
-import { User } from "@project/types";
+import type { User } from "@project/types";
 
 import { defaultProcedure } from "..";
 import { getError } from "../../utils";

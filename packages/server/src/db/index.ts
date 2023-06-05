@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Role } from "@project/types";
+import type { Role } from "@project/types";
 
 import { DB_URL, getError } from "../utils";
 import { RoleController } from "../controllers/role.controller";
