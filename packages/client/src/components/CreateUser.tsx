@@ -7,18 +7,16 @@ import {
   FormEventHandler,
   FunctionComponent,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { CreateUser as Payload } from "@project/types";
 import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
-import { useCacheUser } from "../hooks/useCacheUser";
+import { useSession } from "../hooks/useSession";
 
-export type CreateUserProps = {
-  onClose?: () => void;
-};
-
-export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
-  const { setCacheUser } = useCacheUser();
+export const CreateUser: FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { clearUserSession } = useSession();
   const [email, setEmail] = useState("");
   const [last_name, setLastName] = useState("");
   const [first_name, setFirstName] = useState("");
@@ -27,7 +25,12 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
     error,
     isLoading,
     mutate: createUser,
-  } = trpc.userProcedure.useMutation({ onSuccess: setCacheUser });
+  } = trpc.userProcedure.useMutation({
+    onSuccess: () => {
+      clearUserSession();
+      navigate({ pathname: "/login" });
+    },
+  });
 
   const handleFieldChange = useCallback<
     (
@@ -99,8 +102,8 @@ export const CreateUser: FunctionComponent<CreateUserProps> = ({ onClose }) => {
             color="gray"
             type="button"
             variant="subtle"
-            onClick={onClose}
             disabled={isLoading}
+            onClick={() => navigate({ pathname: "/login" })}
           >
             Close
           </Button>

@@ -5,23 +5,21 @@ import {
   FunctionComponent,
   ChangeEventHandler,
 } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Button, Title, Text, TextInput } from "@mantine/core";
 
 import { trpc } from "../trpc";
-import { useCacheUser } from "../hooks/useCacheUser";
+import { useSession } from "../hooks/useSession";
 
-export type LoginProps = {
-  onCreate?: () => void;
-};
-
-export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
-  const { setCacheUser } = useCacheUser();
+export const Login: FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { userSession, setUserSession } = useSession();
   const [email, setEmail] = useState("");
   const {
     error,
     isLoading,
     mutate: login,
-  } = trpc.loginProcedure.useMutation({ onSuccess: setCacheUser });
+  } = trpc.loginProcedure.useMutation({ onSuccess: setUserSession });
 
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     function (e) {
@@ -37,6 +35,10 @@ export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
     },
     []
   );
+
+  if (userSession) {
+    return <Navigate to={{ pathname: "/panel" }} />;
+  }
 
   return (
     <>
@@ -63,8 +65,8 @@ export const Login: FunctionComponent<LoginProps> = ({ onCreate }) => {
             color="gray"
             type="button"
             variant="subtle"
-            onClick={onCreate}
             disabled={isLoading}
+            onClick={() => navigate({ pathname: "/createUser" })}
           >
             Create
           </Button>

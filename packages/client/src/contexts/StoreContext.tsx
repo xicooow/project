@@ -7,7 +7,7 @@ import {
 } from "react";
 import type { User } from "@project/types";
 
-import { useCacheUser } from "../hooks/useCacheUser";
+import { useSession } from "../hooks/useSession";
 import { reducer, initialState } from "../store/reducer";
 
 export type StoreContextProps = {
@@ -20,14 +20,16 @@ export const StoreContext = createContext<StoreContextProps | null>(null);
 export const StoreContextProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
-  const { cacheUser } = useCacheUser();
+  const { userSession } = useSession();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(
     function () {
-      if (cacheUser) setUser(cacheUser);
+      if (userSession) {
+        setUser(userSession);
+      }
     },
-    [cacheUser]
+    [userSession]
   );
 
   function setUser(user: User) {
