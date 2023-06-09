@@ -24,8 +24,8 @@ export const BrowserRouter: FunctionComponent = () => {
         <Route index element={<Login />} />
         <Route path="login" element={<Login />} />
         <Route path="createUser" element={<CreateUser />} />
-        <Route element={<ProtectedRoute isAllowed={isLogged} />}>
-          <Route path="panel" element={<Panel />} />
+        <Route path="panel" element={<ProtectedRoute isAllowed={isLogged} />}>
+          <Route index element={<Panel />} />
         </Route>
       </Route>
     </Routes>
