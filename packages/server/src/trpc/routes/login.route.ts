@@ -1,7 +1,8 @@
+import crypto from "crypto";
 import type { User } from "@project/types";
 
 import { defaultProcedure } from "..";
-import { getError } from "../../utils";
+import { getError, sendMail } from "../../utils";
 import { UserController } from "../../controllers/user.controller";
 
 export const loginProcedure = defaultProcedure
@@ -20,6 +21,12 @@ export const loginProcedure = defaultProcedure
       const user = await UserController.getUserByEmail(email);
       user.session_count = user.session_count + 1;
       await user.save();
+      /** @todo save user token as pending */
+      await sendMail({
+        to: email,
+        subject: "Validate your login",
+        html: `<p>Token: <strong>${crypto.randomUUID()}</strong></p>`,
+      });
       return {
         ...user.toObject(),
         _id: user._id.toString(),
