@@ -7,7 +7,6 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { App } from "../App";
 import { withAppContext } from "./withAppContext";
 import { ThemeProps, mantineProps } from "../themes";
-import { StoreContextProvider } from "./StoreContext";
 import { trpc, trpcClient, queryClient } from "../trpc";
 
 export type AppContextProps = PropsWithChildren<{
@@ -25,9 +24,7 @@ export const AppContext: FunctionComponent<AppContextProps> = ({
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <MantineProvider {...mantineProps}>
-          <StoreContextProvider>{children}</StoreContextProvider>
-        </MantineProvider>
+        <MantineProvider {...mantineProps}>{children}</MantineProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

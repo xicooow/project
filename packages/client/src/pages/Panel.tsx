@@ -1,13 +1,13 @@
 import { FunctionComponent } from "react";
 
-import { useStore } from "../hooks/useStore";
+import { useSession } from "../hooks/useSession";
 
 export const Panel: FunctionComponent = () => {
-  const { user } = useStore();
+  const { userSession: user } = useSession();
 
   return (
     <section>
-      <h1>Welcome {user.display_name}!</h1>
+      <h1>Welcome {user?.display_name}!</h1>
     </section>
   );
 };
