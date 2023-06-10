@@ -1,3 +1,4 @@
+import { Secret } from "jsonwebtoken";
 import nodemailer, { SendMailOptions } from "nodemailer";
 import { format, transports, createLogger } from "winston";
 
@@ -43,4 +44,21 @@ export async function sendMail(options: SendMailOptions) {
     logger.error("Failed to send email with reason %s", err.message);
     throw err;
   }
+}
+
+export function generateCode() {
+  const mask = "xxxxxx";
+  return mask
+    .split("")
+    .map(() => `${Math.floor(Math.random() * 10)}`)
+    .join("");
+}
+
+export function getJWTSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("Missing env var for JWT secret");
+  }
+
+  return secret as Secret;
 }

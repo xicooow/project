@@ -13,13 +13,15 @@ import { useSession } from "../hooks/useSession";
 
 export const Login: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { userSession, setUserSession } = useSession();
+  const { userSession } = useSession();
   const [email, setEmail] = useState("");
   const {
     error,
     isLoading,
     mutate: login,
-  } = trpc.loginProcedure.useMutation({ onSuccess: setUserSession });
+  } = trpc.loginProcedure.useMutation({
+    onSuccess: () => navigate({ pathname: "/activateUser" }),
+  });
 
   const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     function (e) {

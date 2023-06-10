@@ -1,9 +1,10 @@
-import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import type { User } from "@project/types";
 
 import { defaultProcedure } from "..";
-import { getError, sendMail } from "../../utils";
 import { UserController } from "../../controllers/user.controller";
+import { generateCode, getError, getJWTSecret, sendMail } from "../../utils";
+import { ValidationController } from "../../controllers/validation.controller";
 
 export const loginProcedure = defaultProcedure
   .input(function (value): User["email"] {
@@ -19,18 +20,15 @@ export const loginProcedure = defaultProcedure
   .mutation(async function ({ input: email }) {
     try {
       const user = await UserController.getUserByEmail(email);
-      user.session_count = user.session_count + 1;
-      await user.save();
-      /** @todo save user token as pending */
+      const code = generateCode();
+      const userId = user._id.toString();
+      const token = jwt.sign({ userId }, getJWTSecret(), { expiresIn: "1d" });
+      await ValidationController.create({ code, token, userId });
       await sendMail({
         to: email,
         subject: "Validate your login",
-        html: `<p>Token: <strong>${crypto.randomUUID()}</strong></p>`,
+        html: `<p>Activation Code: <strong>${code}</strong></p>`,
       });
-      return {
-        ...user.toObject(),
-        _id: user._id.toString(),
-      };
     } catch (error) {
       throw getError(error);
     }
